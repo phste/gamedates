@@ -33,8 +33,5 @@ public class FetchGameDates {
 
         System.out.printf("Found %s games.", games.size());
         games.forEach(System.out::println);
-
     }
-
-
 }

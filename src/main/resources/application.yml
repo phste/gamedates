@@ -11,6 +11,7 @@ pages:
   - https://baden.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=B2+S+2023&group=163
   - https://baden.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=B2+S+2023&group=113
 
+# Some teams have two additional fields (Spielort, Platz) that have to be considered
 teamswithindex:
   - U15m
   - Damen (4er)
