@@ -1,35 +1,38 @@
 package api;
 
 
-import StringUtils.StringHelper;
-import content.JsoupHelper;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import config.ConfigReader;
+import content.Parser;
+import model.Game;
+
 
 import java.io.IOException;
+import java.util.List;
 
 public class FetchGameDates {
 
     public static void main(String[] args) {
-        JsoupHelper jsoupHelper = new JsoupHelper();
-        StringHelper stringHelper = new StringHelper();
-        String page = "https://baden.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=B2+S+2023&group=15";
-        Connection connection = Jsoup.connect(page);
-        Document document = null;
-
+        ConfigReader configReader = new ConfigReader("src/main/resources/application.yml");
+        Parser parser = new Parser(configReader);
+        List<String> pages;
         try {
-            document = connection.get();
+            pages = configReader.getPages();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+        List<Game> games = pages
+                .stream()
+                .flatMap(page -> {
+                    try {
+                        return parser.getGames(page).stream();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .toList();
 
-        String title = jsoupHelper.getTitle(document);
-        String team = stringHelper.extractTeam(title);
-        System.out.printf("Mannschaft: %s%n", team);
-
-        String table = jsoupHelper.getTable(document);
-        System.out.println(table);
+        System.out.printf("Found %s games.", games.size());
+        games.forEach(System.out::println);
 
     }
 

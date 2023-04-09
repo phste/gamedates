@@ -1,16 +1,24 @@
 package model;
+
 public class Game {
 
+
+    private final String team;
     private final String homeTeam;
-    private final String foreignTeam;
+    private final String guestTeam;
     private final String date;
     private final String time;
 
-    public Game(String homeTeam, String foreignTeam, String date, String time) {
+    public Game(String team, String homeTeam, String guestTeam, String date, String time) {
+        this.team = team;
         this.homeTeam = homeTeam;
-        this.foreignTeam = foreignTeam;
+        this.guestTeam = guestTeam;
         this.date = date;
         this.time = time;
+    }
+
+    public String getTeam() {
+        return team;
     }
 
     public String getHomeTeam() {
@@ -18,7 +26,7 @@ public class Game {
     }
 
     public String getForeignTeam() {
-        return foreignTeam;
+        return guestTeam;
     }
 
     public String getDate() {
@@ -27,5 +35,16 @@ public class Game {
 
     public String getTime() {
         return time;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "team='" + team + '\'' +
+                ", homeTeam='" + homeTeam + '\'' +
+                ", guestTeam='" + guestTeam + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                '}';
     }
 }
