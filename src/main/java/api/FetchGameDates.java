@@ -7,6 +7,7 @@ import model.Game;
 
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 public class FetchGameDates {
@@ -32,6 +33,12 @@ public class FetchGameDates {
                 .toList();
 
         System.out.printf("Found %s games.", games.size());
-        games.forEach(System.out::println);
+        games.forEach(game -> {
+            try {
+                OAuthCalendar.generateAndPostEvent(game, configReader);
+            } catch (IOException | GeneralSecurityException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

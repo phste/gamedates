@@ -37,6 +37,13 @@ public class ConfigReader {
         return teamsWithIndex;
     }
 
+    public boolean getPostingEnabled() throws IOException {
+        File file = new File(path);
+
+        JsonNode postingEnabledJsonNode = getJsonNode(file, "posting-enabled");
+        return postingEnabledJsonNode.asBoolean(false);
+    }
+
     private JsonNode getJsonNode(File file, String key) throws IOException {
         return objectMapper.readTree(file).get(key);
     }

@@ -12,6 +12,8 @@ import java.util.List;
 
 public class JsoupHelper {
 
+    private static final String TC_KARLSRUHE_WEST = "TC Karlsruhe-West";
+
     public String getTitle(Document document) {
         return document.body().getElementById("title").text();
     }
@@ -29,7 +31,7 @@ public class JsoupHelper {
         return dateTable.getElementsByTag("tr");
     }
 
-    public List<Game> getGames(String team, Elements tablerows, ConfigReader configReader) throws IOException {
+    public List<Game> createGamesFromTableRows(String team, Elements tablerows, ConfigReader configReader) throws IOException {
         int index = 0;
         if (configReader.getTeamsWithIndex().stream().anyMatch(teamWithIndex -> teamWithIndex.equals(team))) {
             index = 2;
@@ -52,15 +54,15 @@ public class JsoupHelper {
             currentDateTime = dateTime;
             String homeTeam = td.get(3 + index).text();
             String guestTeam = td.get(4 + index).text();
-            if (homeTeam.contains("TC Karlsruhe-West") || guestTeam.contains("TC Karlsruhe-West")) {
-                Game game = createGame(team, homeTeam, guestTeam, date, time);
+            if (homeTeam.contains(TC_KARLSRUHE_WEST) || guestTeam.contains(TC_KARLSRUHE_WEST)) {
+                Game game = createGame(team, homeTeam, guestTeam, date, time, homeTeam.contains(TC_KARLSRUHE_WEST));
                 games.add(game);
             }
         }
         return games;
     }
 
-    private Game createGame(String team, String homeTeam, String guestTeam, String date, String time) {
-        return new Game(team, homeTeam, guestTeam, date, time);
+    private Game createGame(String team, String homeTeam, String guestTeam, String date, String time, boolean isHome) {
+        return new Game(team, homeTeam, guestTeam, date, time, isHome);
     }
 }
