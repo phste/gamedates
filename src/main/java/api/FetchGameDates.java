@@ -33,12 +33,12 @@ public class FetchGameDates {
                 .toList();
 
         System.out.printf("Found %s games.", games.size());
-        games.forEach(System.out::println);
-        Game game = games.get(0);
-        try {
-            OAuthCalendar.generateAndPostEvent(game);
-        } catch (IOException | GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
+        games.forEach(game -> {
+            try {
+                OAuthCalendar.generateAndPostEvent(game, configReader);
+            } catch (IOException | GeneralSecurityException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

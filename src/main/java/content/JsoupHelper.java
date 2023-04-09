@@ -31,7 +31,7 @@ public class JsoupHelper {
         return dateTable.getElementsByTag("tr");
     }
 
-    public List<Game> getGames(String team, Elements tablerows, ConfigReader configReader) throws IOException {
+    public List<Game> createGamesFromTableRows(String team, Elements tablerows, ConfigReader configReader) throws IOException {
         int index = 0;
         if (configReader.getTeamsWithIndex().stream().anyMatch(teamWithIndex -> teamWithIndex.equals(team))) {
             index = 2;

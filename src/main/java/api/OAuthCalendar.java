@@ -16,6 +16,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import config.ConfigReader;
 import model.Game;
 
 import java.io.FileNotFoundException;
@@ -74,7 +75,7 @@ public class OAuthCalendar {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static void generateAndPostEvent(Game game) throws IOException, GeneralSecurityException {
+    public static void generateAndPostEvent(Game game, ConfigReader configReader) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service =
@@ -87,8 +88,12 @@ public class OAuthCalendar {
 
         String calendarId = "tcka.west@gmail.com";
 
-        event = service.events().insert(calendarId, event).execute();
-        System.out.printf("Event created: %s", event.getHtmlLink());
+        if (configReader.getPostingEnabled()) {
+            event = service.events().insert(calendarId, event).execute();
+            System.out.printf("Event created: %s", event.getHtmlLink());
+        } else {
+            System.out.printf("Skipped posting of event %s", event);
+        }
     }
 
     protected static Event createEvent(Game game) {

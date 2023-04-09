@@ -39,7 +39,7 @@ public class Parser {
             String title = jsoupHelper.getTitle(document);
             String team = stringHelper.extractTeam(title);
             Elements tableRows = jsoupHelper.getTableRows(document);
-            games = jsoupHelper.getGames(team, tableRows, configReader);
+            games = jsoupHelper.createGamesFromTableRows(team, tableRows, configReader);
         } else {
             System.out.println("Document is null");
         }
