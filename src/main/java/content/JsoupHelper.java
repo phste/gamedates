@@ -6,13 +6,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.naming.ConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsoupHelper {
 
-    private static final String TC_KARLSRUHE_WEST = "TC Karlsruhe-West";
+    public JsoupHelper() {
+    }
 
     public String getTitle(Document document) {
         return document.body().getElementById("title").text();
@@ -31,7 +33,7 @@ public class JsoupHelper {
         return dateTable.getElementsByTag("tr");
     }
 
-    public List<Game> createGamesFromTableRows(String team, Elements tablerows, ConfigReader configReader) throws IOException {
+    public List<Game> createGamesFromTableRows(String team, Elements tablerows, ConfigReader configReader) throws IOException, ConfigurationException {
         int index = 0;
         if (configReader.getTeamsWithIndex().stream().anyMatch(teamWithIndex -> teamWithIndex.equals(team))) {
             index = 2;
@@ -40,6 +42,7 @@ public class JsoupHelper {
         String currentDateTime = null;
         for (int i = 0; i < tablerows.size(); i++) {
             if (i == 0) {
+                // First row is header of table in which we are not interested
                 continue;
             }
             Elements td = tablerows.get(i).getElementsByTag("td");
@@ -54,8 +57,8 @@ public class JsoupHelper {
             currentDateTime = dateTime;
             String homeTeam = td.get(3 + index).text();
             String guestTeam = td.get(4 + index).text();
-            if (homeTeam.contains(TC_KARLSRUHE_WEST) || guestTeam.contains(TC_KARLSRUHE_WEST)) {
-                Game game = createGame(team, homeTeam, guestTeam, date, time, homeTeam.contains(TC_KARLSRUHE_WEST));
+            if (homeTeam.contains(configReader.getHomeTeam()) || guestTeam.contains(configReader.getHomeTeam())) {
+                Game game = createGame(team, homeTeam, guestTeam, date, time, homeTeam.contains(configReader.getHomeTeam()));
                 games.add(game);
             }
         }
