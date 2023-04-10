@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import javax.naming.ConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Parser {
         this.configReader = configReader;
     }
 
-    public List<Game> getGames(String page) throws IOException {
+    public List<Game> getGames(String page) throws IOException, ConfigurationException {
         JsoupHelper jsoupHelper = new JsoupHelper();
         StringHelper stringHelper = new StringHelper();
 

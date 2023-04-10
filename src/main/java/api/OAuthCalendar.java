@@ -86,13 +86,13 @@ public class OAuthCalendar {
         // Create an event
         Event event = createEvent(game);
 
-        String calendarId = "tcka.west@gmail.com";
+        String calendarId = configReader.getCalendarId();
 
-        if (configReader.getPostingEnabled()) {
+        if (Boolean.TRUE.equals(configReader.getPostingEnabled())) {
             event = service.events().insert(calendarId, event).execute();
-            System.out.printf("Event created: %s", event.getHtmlLink());
+            System.out.printf("Event created: %s%n", event.getHtmlLink());
         } else {
-            System.out.printf("Skipped posting of event %s", event);
+            System.out.printf("Skipped posting of event %s%n", event);
         }
     }
 
