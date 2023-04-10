@@ -19,7 +19,7 @@ Read the documentation by google (https://developers.google.com/calendar/api/qui
 
 Just run the main method in [FetchGameDates](src/main/java/api/FetchGameDates.java)
 
-## General
+## General Information
 
 - For the winter season you have to deal with timezones and time change which is not implemented yet
 - Feel free to contact me in case of questions, bug's for ideas for features.
